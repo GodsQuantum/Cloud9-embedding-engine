@@ -10,7 +10,9 @@
       "license": "Apache-2.0",
       "parameters_m": 600,
       "context": 32768,
-      "dimensions": [1024],
+      "dimensions": [
+        1024
+      ],
       "pooling": "last",
       "quant": "Q8_0",
       "size_mb": 639,
@@ -26,7 +28,15 @@
       "license": "CC-BY-NC-4.0",
       "parameters_m": 677,
       "context": 32768,
-      "dimensions": [32,64,128,256,512,768,1024],
+      "dimensions": [
+        32,
+        64,
+        128,
+        256,
+        512,
+        768,
+        1024
+      ],
       "pooling": "last",
       "quant": "Q6_K",
       "size_mb": 495,
@@ -42,7 +52,13 @@
       "license": "Apache-2.0",
       "parameters_m": 311,
       "context": 32768,
-      "dimensions": [128,256,384,512,768],
+      "dimensions": [
+        128,
+        256,
+        384,
+        512,
+        768
+      ],
       "pooling": "cls",
       "quant": "official ONNX/OpenVINO; verify any GGUF locally",
       "size_mb": null,
@@ -58,12 +74,86 @@
       "license": "Gemma",
       "parameters_m": 308,
       "context": 2048,
-      "dimensions": [768],
+      "dimensions": [
+        768
+      ],
       "pooling": "model-default",
       "quant": "Q8_0",
       "size_mb": 334,
       "status": "alternative",
       "notes": "Very compact official ggml-org conversion; shorter context than the 2026 shortlist."
+    },
+    {
+      "id": "bitnet-270m-i2",
+      "name": "Microsoft BitNet Embedding 270M",
+      "source_repo": "microsoft/bitnet-embedding-270m",
+      "hf_spec": "microsoft/bitnet-embedding-270m:I2_S",
+      "file": "bitnet-embeddings-270m-bf16-i2_s.gguf",
+      "license": "MIT",
+      "parameters_m": 270,
+      "context": 32768,
+      "dimensions": [
+        640
+      ],
+      "pooling": "last",
+      "quant": "native 1.58-bit / I2_S",
+      "size_mb": null,
+      "status": "runtime-blocked",
+      "notes": "Official Microsoft GGUF, native ternary weights. Current Cloud9 llama.cpp rejects legacy GGUF type 36 (IQ4_NL_4_4); test via the native BitNet runtime or a compatible reconversion before promotion."
+    },
+    {
+      "id": "bitnet-0.6b-i2",
+      "name": "Microsoft BitNet Embedding 0.6B",
+      "source_repo": "microsoft/bitnet-embedding-0.6b",
+      "hf_spec": "microsoft/bitnet-embedding-0.6b:I2_S",
+      "file": "bitnet-embeddings-0.6b-bf16-i2_s.gguf",
+      "license": "MIT",
+      "parameters_m": 600,
+      "context": 32768,
+      "dimensions": [
+        1024
+      ],
+      "pooling": "last",
+      "quant": "native 1.58-bit / I2_S",
+      "size_mb": null,
+      "status": "runtime-blocked",
+      "notes": "Official Microsoft GGUF, 94 languages; publisher MTEB-v2 67.49. Current Cloud9 llama.cpp rejects legacy GGUF type 36 (IQ4_NL_4_4); benchmark with the native BitNet runtime or a compatible reconversion."
+    },
+    {
+      "id": "harrier-270m",
+      "name": "Microsoft Harrier OSS v1 270M",
+      "source_repo": "microsoft/harrier-oss-v1-270m",
+      "hf_spec": "",
+      "file": "",
+      "license": "MIT",
+      "parameters_m": 270,
+      "context": 32768,
+      "dimensions": [
+        640
+      ],
+      "pooling": "last",
+      "quant": "BF16 official; local GGUF conversion must be gated",
+      "size_mb": null,
+      "status": "research-candidate",
+      "notes": "94 languages; publisher MTEB-v2 66.5. No official GGUF in model repo as of 2026-10-02."
+    },
+    {
+      "id": "harrier-0.6b",
+      "name": "Microsoft Harrier OSS v1 0.6B",
+      "source_repo": "microsoft/harrier-oss-v1-0.6b",
+      "hf_spec": "",
+      "file": "",
+      "license": "MIT",
+      "parameters_m": 600,
+      "context": 32768,
+      "dimensions": [
+        1024
+      ],
+      "pooling": "last",
+      "quant": "BF16 official; local GGUF conversion must be gated",
+      "size_mb": null,
+      "status": "research-candidate",
+      "notes": "94 languages; publisher MTEB-v2 69.0. Qwen3 backbone; compare to Cloud9 Qwen3 baseline."
     }
   ]
 }

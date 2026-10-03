@@ -29,3 +29,24 @@ Reference hardware: Ryzen 7 8845HS / Radeon 780M, RADV Vulkan.
 Qwen3-Embedding-0.6B Q8_0 produced about 54.9 req/s on the short sequential micro-benchmark and about 73.4 embeddings/s at batch 32. Five cross-engine samples had cosine 0.99959–0.99976 versus the TEI/ONNX representation.
 
 Large knowledge-base chunks around ~900 tokens take materially longer. Production configuration should therefore be chosen from real corpus tests, not the short benchmark alone.
+
+
+## Cloud9 profile gate — 2026-10-03
+
+Same model and backend for every arm: Qwen3-Embedding-0.6B Q8_0, Radeon 780M / Vulkan, batch size 2048. Raw artifacts are retained locally under `bench/results/2026-10-03-profile-ab/`.
+
+| Profile | Context | Parallel | UBatch | Recall@1 | Small req/s | Batch32 emb/s | Long8 emb/s |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| previous production | 8192 | 1 | 512 | 1.00 | 20.245 | 20.529 | 3.369 |
+| selected | 8192 | 4 | 2048 | 1.00 | 19.238 | 26.436 | 3.432 |
+| np8 | 8192 | 8 | 2048 | 1.00 | 19.731 | 26.831 | 3.311 |
+| bulk np8 | 16384 | 8 | 2048 | 1.00 | 19.495 | 27.096 | 3.338 |
+
+Decision:
+- retain Qwen3-Embedding-0.6B Q8_0 and its 1024-dimensional index compatibility;
+- production profile becomes **8K / np4 / ub2048**;
+- versus the previous profile it improves batch32 throughput by ~28.8% and the long-input test by ~1.9%, with ~5% lower single-request microbenchmark throughput;
+- np8 and 16K add too little to justify extra parallel/context capacity;
+- BitNet official GGUFs remain runtime-blocked on the current llama.cpp tensor type, and Harrier remains a research candidate; no re-index is justified.
+
+A later confirmation request against the live production endpoint was deliberately excluded from profile selection because concurrent Cloud9 workloads (Next.js build, n8n, MCPProxy, HAOS) reduced batch32 throughput to 1.844 emb/s. The controlled exclusive A/B above is the comparable selection dataset.

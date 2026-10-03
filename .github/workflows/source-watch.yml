@@ -1,0 +1,46 @@
+name: Model source watch
+
+on:
+  schedule:
+    - cron: "47 4 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  watch:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - id: check
+        name: Check Hugging Face source revisions
+        shell: bash
+        run: |
+          set +e
+          python3 scripts/update-source-revisions.py > /tmp/source-watch.json
+          rc=$?
+          cat /tmp/source-watch.json
+          if [ "$rc" -eq 2 ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          elif [ "$rc" -ne 0 ]; then
+            exit "$rc"
+          fi
+      - name: Open or refresh review issue
+        if: steps.check.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          title="Embedding model sources changed — review before re-index"
+          body="$(printf '%s\n\n%s\n%s\n%s' \
+            'One or more pinned embedding model repositories changed upstream.' \
+            'Do not promote a new embedding model or revision without the local retrieval/performance gate; changing vector dimensions or semantics requires an explicit re-index.' \
+            '\`\`\`json' "$(cat /tmp/source-watch.json)" '\`\`\`')"
+          n="$(gh issue list --state open --search "$title in:title" --json number,title --jq '.[] | select(.title == "'"$title"'") | .number' | head -1)"
+          if [ -n "$n" ]; then
+            gh issue edit "$n" --body "$body"
+          else
+            gh issue create --title "$title" --body "$body"
+          fi

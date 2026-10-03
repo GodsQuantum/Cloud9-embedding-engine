@@ -11,7 +11,7 @@ ap.add_argument("--tokens-ish",type=int,default=256,help="approximate word-sized
 args=ap.parse_args()
 
 seed="Cloud9 semantic retrieval benchmark français English multilingual local embedding. "
-text=(seed*((args.tokens-ish+7)//8))[:args.tokens-ish*10]
+text=(seed*((args.tokens_ish+7)//8))[:args.tokens_ish*10]
 payload=json.dumps({"model":args.model,"input":[text+str(i) for i in range(args.batch)]}).encode()
 
 def one(_):

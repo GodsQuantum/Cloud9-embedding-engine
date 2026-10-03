@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "checked_on": "2026-10-02",
+  "huggingface": {
+    "Qwen/Qwen3-Embedding-0.6B-GGUF": "370f27d7550e0def9b39c1f16d3fbaa13aa67728",
+    "jinaai/jina-embeddings-v5-text-small-retrieval-GGUF": "78b0ebcb4c870fdfef409e578b65288b49a4fa90",
+    "ibm-granite/granite-embedding-311m-multilingual-r2": "44399559930365213510b1ee2eb15ded83374f0e",
+    "ggml-org/embeddinggemma-300M-GGUF": "0f741b5a6585bd53aeb15cd1372c56f2a0f65e12",
+    "microsoft/bitnet-embedding-270m": "5f1c2fd19f37ca653a3d719c8ee6cc1895f4b64f",
+    "microsoft/bitnet-embedding-0.6b": "16176d108561b62e3d6f2b558587afe1140b413f",
+    "microsoft/harrier-oss-v1-270m": "31de22b673913c7d658c0f03f792d77c2dcf8ebd",
+    "microsoft/harrier-oss-v1-0.6b": "f9b9dc8d367d443f2479d27aa5d8d2850c0774ee"
+  }
+}

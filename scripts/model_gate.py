@@ -4,7 +4,7 @@ import argparse,json,math,time,urllib.request
 
 PAIRS=[
 ("serveur de sauvegarde pour machines virtuelles","Proxmox Backup Server stores versioned VM and container backups."),
-("spectacle humoristique et écriture de blagues","Le stand-up se construit avec prémisse, tension, rythme et punchline."),
+("spectacle humoristique et écriture de blagues","A stand-up comedian writes jokes, punchlines and comic premises for a live comedy show."),
 ("recherche sémantique de documents","Semantic search retrieves passages by meaning rather than exact keywords."),
 ("température des disques durs","Hard drive temperature should be monitored under sustained storage load."),
 ("réseau USB4 entre deux ordinateurs","USB4 host-to-host networking can expose a high-speed point-to-point link."),
