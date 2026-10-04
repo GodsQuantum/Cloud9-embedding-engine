@@ -8,6 +8,8 @@ PORT="${C9EE_PORT:-8091}"
 GPU_LAYERS="${C9EE_GPU_LAYERS:-999}"
 BATCH="${C9EE_BATCH:-2048}"
 CACHE_RAM="${C9EE_CACHE_RAM:-0}"
+POLL="${C9EE_POLL:-0}"
+POLL_BATCH="${C9EE_POLL_BATCH:-0}"
 case "$PROFILE" in
   production) PARALLEL="${C9EE_PARALLEL:-1}"; CONTEXT="${C9EE_CONTEXT:-8192}";  UBATCH="${C9EE_UBATCH:-512}" ;;
   balanced)   PARALLEL="${C9EE_PARALLEL:-2}"; CONTEXT="${C9EE_CONTEXT:-8192}";  UBATCH="${C9EE_UBATCH:-1024}" ;;
@@ -55,7 +57,7 @@ else
   exit 69
 fi
 
-args=(--embedding -ngl "$GPU_LAYERS" -c "$CONTEXT" -b "$BATCH" -ub "$UBATCH" -np "$PARALLEL" --host "$HOST" --port "$PORT" --no-webui --cache-ram "$CACHE_RAM")
+args=(--embedding -ngl "$GPU_LAYERS" -c "$CONTEXT" -b "$BATCH" -ub "$UBATCH" -np "$PARALLEL" --host "$HOST" --port "$PORT" --no-webui --cache-ram "$CACHE_RAM" --poll "$POLL" --poll-batch "$POLL_BATCH")
 [[ -n "$POOLING" ]] && args+=(--pooling "$POOLING")
 
 if [[ -n "${C9EE_MODEL_PATH:-}" ]]; then

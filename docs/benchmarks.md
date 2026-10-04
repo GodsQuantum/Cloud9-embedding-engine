@@ -50,3 +50,19 @@ Decision:
 - BitNet official GGUFs remain runtime-blocked on the current llama.cpp tensor type, and Harrier remains a research candidate; no re-index is justified.
 
 A later confirmation request against the live production endpoint was deliberately excluded from profile selection because concurrent Cloud9 workloads (Next.js build, n8n, MCPProxy, HAOS) reduced batch32 throughput to 1.844 emb/s. The controlled exclusive A/B above is the comparable selection dataset.
+
+## Idle polling optimization — 2026-10-04
+
+The production llama-server was observed with no TCP clients and no recent requests while consuming about 143% host CPU at idle. The cause was llama.cpp's default `--poll 50` worker polling.
+
+The wrapper now defaults to:
+- `C9EE_POLL=0`;
+- `C9EE_POLL_BATCH=0`.
+
+Live validation on the same Qwen3-Embedding-0.6B Q8_0 / 8K / np4 / ub2048 profile:
+- `GET /health`: OK;
+- one French embedding request: 0.2469 s, 1 vector, 1024 dimensions;
+- three consecutive 1-second idle CPU samples after the request: **0.00% / 0.00% / 0.00%**;
+- previous idle process CPU before the change: about **143%**.
+
+This is retained because it removes continuous idle CPU burn without changing the model, index dimension, batching profile or API contract. Throughput selection remains based on the controlled profile A/B above; the 0.2469 s smoke is a functional/idle-power validation, not a new throughput benchmark.
