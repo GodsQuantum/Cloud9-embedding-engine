@@ -23,6 +23,7 @@ The reference platform is an AMD Ryzen 7 8845HS / Radeon 780M (RADV/Vulkan), but
 - **Index safety** — switching model or vector dimension is treated as a re-index event, never an invisible runtime tweak.
 - **Bulk vs production profiles** — production defaults to one low-contention slot; initial corpus ingestion can temporarily use more slots.
 - **No model lock-in** — the catalog documents quality, licensing, dimensions, context, pooling and trusted quantized variants.
+- **Multi-node ready** — replicate the same model on several machines and health-check them with `scripts/cluster-doctor.sh`; route complete embedding requests instead of introducing tensor-sharding overhead. See [docs/distributed.md](docs/distributed.md).
 
 ## Current model shortlist
 
