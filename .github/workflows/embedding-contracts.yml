@@ -2,8 +2,9 @@ name: Embedding correctness contracts
 
 on:
   push:
-    branches: [main, lab/embedding-gate-contract-20261013]
+    branches: [main]
   pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
