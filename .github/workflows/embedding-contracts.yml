@@ -1,0 +1,31 @@
+name: Embedding correctness contracts
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Catalog consistency (no inference)
+        run: bash tests/catalog.sh
+      - name: Embedding API response and bilingual ranking contracts (no GPU/network)
+        run: python3 -B tests/model_gate_contract_test.py
+      - name: Python and shell syntax
+        run: |
+          python3 -B - <<'PY'
+          import ast
+          from pathlib import Path
+          for p in Path("scripts").glob("*.py"):
+              ast.parse(p.read_text(encoding="utf-8"))
+          print("EMBEDDING_SYNTAX_PASS")
+          PY
+          bash -n bin/cloud9-embedding-engine bin/cloud9-embedding-server scripts/install.sh

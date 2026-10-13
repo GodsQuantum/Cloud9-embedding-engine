@@ -17,7 +17,7 @@ Cloud9 Embedding Engine est un moteur dédié aux embeddings locaux. Il sert des
 - un modèle d'embedding petit et séparé du moteur de génération ;
 - Vulkan/RDNA validé sur Ryzen 7 8845HS / Radeon 780M ;
 - modèle et dimension explicitement verrouillés par index ;
-- benchmark avant promotion ;
+- benchmark avant promotion, avec **contrôle strict des indices de réponse et des vecteurs** (NaN, valeurs nulles, dimensions) pour éviter les faux scores de rappel ; voir [la validation bilingue](docs/model-gate-integrity.md) ;
 - profil `production` à 1 slot, `bulk` à 8 slots uniquement pour une ingestion initiale ;
 - cache hôte llama.cpp désactivé par défaut (`C9EE_CACHE_RAM=0`) pour éviter plusieurs Gio de RAM inutiles sur des prompts d'embedding uniques ;
 - priorité CPU/I/O basse afin que le moteur cède devant les services critiques ;

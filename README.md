@@ -19,7 +19,7 @@ The reference platform is an AMD Ryzen 7 8845HS / Radeon 780M (RADV/Vulkan), but
 - **OpenAI-compatible** — `/v1/embeddings` works with Open WebUI and other OpenAI-compatible clients.
 - **Small resident model** — embedding stays separate from the large chat model and can coexist with agent/inference workloads.
 - **RDNA-first Vulkan** — validated on Radeon 780M, without ROCm-only assumptions.
-- **Model gate** — benchmark a candidate before promoting it.
+- **Fail-closed model gate** — verifies OpenAI response indices, vector dimensions, finite nonzero values and French/English retrieval scoring before trusting a candidate benchmark. [Validation method](docs/model-gate-integrity.md).
 - **Index safety** — switching model or vector dimension is treated as a re-index event, never an invisible runtime tweak.
 - **Bulk vs production profiles** — production defaults to one low-contention slot; initial corpus ingestion can temporarily use more slots.
 - **No model lock-in** — the catalog documents quality, licensing, dimensions, context, pooling and trusted quantized variants.
