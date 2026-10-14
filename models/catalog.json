@@ -3,7 +3,8 @@
   "models": [
     {
       "id": "qwen3-0.6b-q8",
-      "name": "Qwen3-Embedding-0.6B",
+      "name": "Qwen3-Embedding-0.6B — Recherche sémantique FR/multilingue",
+      "specialty": "Retrieval et indexation de documents FR/multilingues",
       "source_repo": "Qwen/Qwen3-Embedding-0.6B-GGUF",
       "hf_spec": "Qwen/Qwen3-Embedding-0.6B-GGUF:Q8_0",
       "file": "Qwen3-Embedding-0.6B-Q8_0.gguf",
