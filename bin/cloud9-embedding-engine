@@ -37,7 +37,7 @@ case "$cmd" in
 import json,sys
 d=json.load(open(sys.argv[1]))
 for m in d["models"]:
-    print(f'{m["id"]:<24} {m["license"]:<16} {m["context"]:>6} ctx  {m["status"]}')
+    print(f'{m["id"]:<24} {m["license"]:<16} {m["context"]:>6} ctx  {m["status"]}  {m["name"]}')
 PY
     ;;
   serve)
