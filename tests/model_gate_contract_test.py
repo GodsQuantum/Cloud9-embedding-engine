@@ -3,6 +3,7 @@
 import importlib.util
 import io
 import json
+import math
 from pathlib import Path
 from unittest import TestCase, main, mock
 
@@ -69,8 +70,22 @@ class EmbeddingGateContracts(TestCase):
             result = gate.evaluate("http://example.invalid", "local", pairs=[("q1", "d1"), ("q2", "d2"), ("q3", "d3")])
         self.assertEqual(result["pairs"], 3)
         self.assertEqual(result["recall_at_1"], 1.0)
+        self.assertEqual(result["recall_at_3"], 1.0)
+        self.assertEqual(result["mrr"], 1.0)
+        self.assertEqual(result["ndcg_at_3"], 1.0)
         self.assertEqual(result["dimension"], 3)
         self.assertEqual(mocked.call_count, 2)
+
+    def test_rank_metrics_when_both_gold_documents_are_second(self):
+        queries = [[1., 0.], [0., 1.]]
+        docs = [[0.6, 0.8], [0.8, 0.6]]
+        with mock.patch.object(gate, "embed", side_effect=[queries, docs]):
+            result = gate.evaluate("http://example.invalid", "local", pairs=[("q1", "d1"), ("q2", "d2")])
+        self.assertEqual(result["recall_at_1"], 0.0)
+        self.assertEqual(result["recall_at_3"], 1.0)
+        self.assertEqual(result["mrr"], 0.5)
+        self.assertAlmostEqual(result["ndcg_at_3"], 1.0 / math.log2(3))
+
 
     def test_query_document_dimension_mismatch_rejected(self):
         with mock.patch.object(gate, "embed", side_effect=[[[1.0, 0.0]], [[1.0]]]):
