@@ -22,6 +22,8 @@ Do not compare results from different input lengths as if they were equivalent.
 
 It is **not** a replacement for MTEB, MIRACL, BEIR or a domain-specific evaluation.
 
+From the October 14, 2026 CT700 laboratory branch, the retrieval gate also computes `recall_at_3`, `mrr` and `ndcg_at_3` with deterministic tie-breaking and one known relevant document per query. Its original six bilingual pairs, `recall_at_1` and API/1024-dimension contract remain unchanged. Any comparison across engine candidates must use the **same** query/document set, quantization, corpus and index dimensions; live smoke latency while concurrent workloads run is not a throughput benchmark.
+
 ## Cloud9 reference
 
 Reference hardware: Ryzen 7 8845HS / Radeon 780M, RADV Vulkan.

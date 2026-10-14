@@ -86,12 +86,25 @@ def evaluate(url, model, pairs=PAIRS):
     if len(qv[0]) != len(dv[0]):
         raise ValueError("Query/document embedding dimensions differ")
     correct = 0
+    hit_at_3 = 0
+    reciprocal_rank = 0.0
+    ndcg_at_3 = 0.0
     for i, query in enumerate(qv):
         scores = [cos(query, document) for document in dv]
-        correct += max(range(len(scores)), key=scores.__getitem__) == i
+        # Stable, deterministic tie-breaking prevents backend-order noise.
+        ranked = sorted(range(len(scores)), key=lambda j: (-scores[j], j))
+        rank = ranked.index(i) + 1
+        correct += rank == 1
+        hit_at_3 += rank <= 3
+        reciprocal_rank += 1.0 / rank
+        if rank <= 3:
+            ndcg_at_3 += 1.0 / math.log2(rank + 1)
     return {
         "pairs": len(pairs),
         "recall_at_1": correct / len(pairs),
+        "recall_at_3": hit_at_3 / len(pairs),
+        "mrr": reciprocal_rank / len(pairs),
+        "ndcg_at_3": ndcg_at_3 / len(pairs),
         "elapsed_s": round(time.perf_counter() - start, 4),
         "dimension": len(qv[0]),
     }
